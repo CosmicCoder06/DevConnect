@@ -1,87 +1,96 @@
 # 📝 Dev-Blog
 
-A full-stack developer blogging platform built with **Node.js**, **Express.js**, and **EJS** following the **MVC (Model-View-Controller)** architecture pattern. Developers can register, log in, create posts, and view a personalized dashboard.
+A developer blogging web app built with **Node.js**, **Express.js**, and **EJS** using the **MVC (Model-View-Controller)** architecture. Users can register, log in, create blog posts, and view them on a dashboard.
 
-> 🎓 Built as a personal project during my 2nd year of B.Tech CSE to learn backend web development and the MVC pattern.
-
----
-
-## 📌 About the Project
-
-Dev-Blog is a server-rendered web application where developers can share their thoughts and experiences through blog posts. This project was built to get hands-on experience with backend development — routing, authentication, middleware, and database modeling — all structured cleanly using the MVC pattern.
+> 🎓 Built as a personal project during my 2nd year of B.Tech CSE to learn backend development, authentication, and the MVC pattern.
 
 ---
 
-## ✨ Features
+## ⚠️ Project Status
 
-- 🔐 **User Authentication** — Register and login with secure session/token-based auth
-- 📝 **Create Posts** — Write and publish blog posts
-- 📋 **Dashboard** — View and manage your own posts
-- 👁️ **Post View** — Read individual blog posts
-- 🧩 **Reusable Layouts** — Shared header, navbar, and footer using EJS partials
-- 🔒 **Protected Routes** — Middleware to guard authenticated-only pages
+This project is a **work in progress**. Core auth and post creation are functional. Some features like the dashboard post listing and individual post view are still being completed.
 
 ---
 
-## 🏗️ MVC Architecture
+## ✨ What Actually Works
 
-```
-DEV-BLOG/
-│
-├── config/                  # Configuration files (DB connection, etc.)
-│
-├── controllers/             # Controller layer — handles request logic
-│   ├── authController.js    # Register, login, logout logic
-│   └── postController.js    # Create, read, display post logic
-│
-├── middlewares/             # Custom middleware
-│   └── authMiddleware.js    # Protects routes from unauthenticated access
-│
-├── models/                  # Model layer — database schemas
-│   ├── User.js              # User schema
-│   └── Post.js              # Post schema
-│
-├── routes/                  # Route definitions
-│   ├── authRoutes.js        # /login, /register, /logout
-│   └── postRoutes.js        # /posts, /posts/create, etc.
-│
-├── views/                   # View layer — EJS templates
-│   ├── pages/
-│   │   ├── login.ejs
-│   │   ├── register.ejs
-│   │   ├── dashboard.ejs
-│   │   ├── createPost.ejs
-│   │   └── post.ejs
-│   └── partials/
-│       ├── header.ejs
-│       ├── navbar.ejs
-│       ├── footer.ejs
-│       └── layout.ejs
-│
-├── public/
-│   └── css/
-│       └── style.css        # Global stylesheet
-│
-├── utils/                   # Helper/utility functions
-├── .env                     # Environment variables (not committed)
-├── app.js                   # App setup and middleware registration
-├── server.js                # Entry point — starts the server
-└── package.json
-```
+- 📝 **Register** — Create an account (name, email, password)
+- 🔐 **Login / Logout** — JWT-based auth stored in HTTP-only cookies
+- ✍️ **Create Post** — Write a blog post with a title and content
+- 🔒 **Protected Routes** — Dashboard and create post are only accessible when logged in
+- 🧭 **Dynamic Navbar** — Shows different links depending on login state
 
 ---
 
 ## 🛠️ Tech Stack
 
-| Layer        | Technology                    |
-|--------------|-------------------------------|
-| Runtime      | Node.js                       |
-| Framework    | Express.js                    |
-| Templating   | EJS (Embedded JavaScript)     |
-| Database     | MongoDB + Mongoose            |
-| Auth         | JWT / Express Sessions        |
-| Styling      | CSS (custom)                  |
-| Architecture | MVC (Model-View-Controller)   |
+| Purpose        | Technology          |
+|----------------|---------------------|
+| Runtime        | Node.js             |
+| Framework      | Express.js          |
+| Templating     | EJS                 |
+| Database       | MongoDB + Mongoose  |
+| Auth           | JWT (jsonwebtoken)  |
+| Password Hash  | bcryptjs            |
+| Cookie Parsing | cookie-parser       |
+| Config         | dotenv              |
+
+---
+
+## 🏗️ Project Structure (MVC)
+
+```
+DEV-BLOG/
+│
+├── controllers/
+│   ├── authController.js     # register & login logic
+│   └── postController.js     # create post logic
+│
+├── middlewares/
+│   └── authMiddleware.js     # JWT verification — protects private routes
+│
+├── models/
+│   ├── User.js               # User schema (name, email, password, bio)
+│   └── Post.js               # Post schema (title, content, author, createdAt)
+│
+├── routes/
+│   ├── authRoutes.js         # POST /api/auth/register & /api/auth/login
+│   └── postRoutes.js         # POST /api/posts
+│
+├── views/
+│   ├── layout.ejs            # Base HTML layout
+│   ├── pages/
+│   │   ├── login.ejs
+│   │   ├── register.ejs
+│   │   ├── dashboard.ejs     # (in progress)
+│   │   ├── createPost.ejs
+│   │   └── post.ejs
+│   └── partials/
+│       └── navbar.ejs        # Dynamic navbar (logged in vs logged out)
+│
+├── public/
+│   └── css/style.css
+│
+├── app.js                    # Express setup, DB connection, all routes
+├── server.js                 # Entry point — starts the server
+└── .env                      # Secret keys (not committed to git)
+```
+
+---
+
+## 🔗 Routes
+
+| Method | Route                  | Description              | Auth Required |
+|--------|------------------------|--------------------------|---------------|
+| GET    | `/`                    | Redirects to `/login`    | ❌            |
+| GET    | `/login`               | Login page               | ❌            |
+| POST   | `/api/auth/login`      | Handles login form       | ❌            |
+| GET    | `/register`            | Register page            | ❌            |
+| POST   | `/api/auth/register`   | Handles register form    | ❌            |
+| GET    | `/dashboard`           | View all posts           | ✅            |
+| GET    | `/posts/create`        | Create post page         | ✅            |
+| POST   | `/api/posts`           | Submit new post          | ✅            |
+| GET    | `/logout`              | Clears cookie, logs out  | ❌            |
 
 ---
 
@@ -89,102 +98,76 @@ DEV-BLOG/
 
 ### Prerequisites
 
-- [Node.js](https://nodejs.org/) (v16+)
+- [Node.js](https://nodejs.org/) v16+
 - [MongoDB](https://www.mongodb.com/) (local or Atlas)
-- [Git](https://git-scm.com/)
 
-### 1. Clone the Repository
+### 1. Clone the repo
 
 ```bash
 git clone https://github.com/CosmicCoder06/DevConnect.git
 cd DevConnect
 ```
 
-### 2. Install Dependencies
+### 2. Install dependencies
 
 ```bash
 npm install
 ```
 
-### 3. Setup Environment Variables
-
-Create a `.env` file in the root directory:
+### 3. Create `.env` file
 
 ```env
-PORT=3000
+PORT=5000
 MONGO_URI=your_mongodb_connection_string
 JWT_SECRET=your_jwt_secret_key
-SESSION_SECRET=your_session_secret
 ```
 
-### 4. Run the App
+### 4. Run the app
 
 ```bash
-# Development mode (with auto-restart)
+# With auto-restart (recommended)
 npm run dev
 
-# Production mode
-npm start
+# Or normally
+node server.js
 ```
 
-> App runs at `http://localhost:3000`
+> App runs at `http://localhost:5000`
 
 ---
 
-## 🔗 Routes Overview
+## 🔐 How Authentication Works
 
-| Method | Route             | Description                  | Auth Required |
-|--------|-------------------|------------------------------|---------------|
-| GET    | `/`               | Home / landing page          | ❌            |
-| GET    | `/login`          | Login page                   | ❌            |
-| POST   | `/login`          | Handle login form            | ❌            |
-| GET    | `/register`       | Register page                | ❌            |
-| POST   | `/register`       | Handle registration form     | ❌            |
-| GET    | `/dashboard`      | User dashboard               | ✅            |
-| GET    | `/posts/create`   | Create post page             | ✅            |
-| POST   | `/posts/create`   | Submit new post              | ✅            |
-| GET    | `/posts/:id`      | View a single post           | ❌            |
-| GET    | `/logout`         | Logout user                  | ✅            |
+1. User registers → password is **hashed with bcrypt** before saving to DB
+2. User logs in → bcrypt compares the password → if correct, a **JWT token** is created
+3. Token is stored in an **HTTP-only cookie** (not accessible by JavaScript — more secure)
+4. On every protected route, the `protect` middleware reads the cookie, verifies the token, fetches the user from DB, and attaches them to `req.user`
+5. Logout simply **clears the cookie**
 
 ---
 
 ## 🧠 What I Learned
 
-- How to structure a Node.js app using the **MVC design pattern**
-- Building and connecting **RESTful routes** with Express.js
-- Creating **dynamic pages** with EJS templating and partials
-- Writing **authentication middleware** to protect routes
-- Designing **Mongoose schemas** for Users and Posts
-- Managing **environment variables** securely with `.env`
+- Structuring a Node.js app with the **MVC pattern**
+- How **JWT authentication** works end-to-end
+- Why passwords must be **hashed** (never stored as plain text)
+- Using **middleware** to protect routes
+- Rendering dynamic pages with **EJS templates and partials**
+- Connecting Express to **MongoDB using Mongoose**
 
 ---
 
-## 📸 Screenshots
+## 🔮 Things Left To Do
 
-> *(Add screenshots of your app here — Login, Dashboard, Create Post, Post view)*
-
----
-
-## 🔮 Future Plans
-
-- [ ] Add edit and delete post functionality
-- [ ] Add comments on posts
-- [ ] Add profile pages for each user
-- [ ] Deploy on Railway / Render
-
----
-
-## 📄 License
-
-This project is open source and available under the [MIT License](LICENSE).
+- [ ] Fix dashboard to properly display all posts
+- [ ] Add individual post view page (`/posts/:id`)
+- [ ] Add delete/edit post functionality
+- [ ] Add proper error pages
+- [ ] Style the UI properly
+- [ ] Deploy on Render or Railway
 
 ---
 
 ## 👨‍💻 Author
 
-**CosmicCoder06**
-- GitHub: [@CosmicCoder06](https://github.com/CosmicCoder06)
-
----
-
-> ⭐ If you liked this project, drop a star on the repo!
+**CosmicCoder06** — [@CosmicCoder06](https://github.com/CosmicCoder06)

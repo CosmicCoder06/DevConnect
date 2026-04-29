@@ -5,7 +5,7 @@ exports.protect = async (req, res, next) => {
   console.log("Protect middleware triggered");
   
   try {
-    // Get token from cookies
+
     const token = req.cookies.token;
     
     if (!token) {
@@ -13,10 +13,10 @@ exports.protect = async (req, res, next) => {
       return res.redirect("/login");
     }
     
-    // Verify token
+
     const decoded = jwt.verify(token, process.env.JWT_SECRET);
     
-    // Fetch user from database
+
     const user = await User.findById(decoded.id);
     
     if (!user) {
@@ -24,7 +24,7 @@ exports.protect = async (req, res, next) => {
       return res.redirect("/login");
     }
     
-    // Attach user to request object
+
     req.user = user;
     console.log("User attached to request:", req.user);
     

@@ -1,0 +1,9 @@
+<%- include("../partials/navbar") %>
+
+<h2>Create Post</h2>
+
+<form action="/api/posts" method="POST">
+  <input type="text" name="title" placeholder="Title" required />
+  <textarea name="content" placeholder="Write..." required></textarea>
+  <button type="submit">Post</button>
+</form>

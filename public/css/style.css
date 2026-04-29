@@ -1,0 +1,22 @@
+.auth-container, .form-container, .post-container {
+  max-width: 500px;
+  margin: 40px auto;
+  background: white;
+  padding: 2rem;
+  border-radius: 10px;
+}
+
+input, textarea {
+  width: 100%;
+  padding: 10px;
+  margin: 10px 0;
+}
+
+button {
+  width: 100%;
+  padding: 10px;
+  background: black;
+  color: white;
+  border: none;
+  cursor: pointer;
+}
